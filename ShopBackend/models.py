@@ -7,6 +7,7 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=20)
+    is_active = models.BooleanField(default=True)
 
 
 class Product(models.Model):
@@ -17,6 +18,8 @@ class Product(models.Model):
     tags = models.ManyToManyField(Tag)
 
 
+
 class Review(models.Model):
     text = models.TextField()
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+

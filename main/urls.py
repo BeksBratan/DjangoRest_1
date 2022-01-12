@@ -6,4 +6,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/products/', views.product_list_view),
     path('api/v1/products/<int:id>/', views.product_detail_view),
+    # path('api/v1/products/reviews/', views.product_list_view),
+    path('api/v1/products/tags/', views.product_list_view),
+
+    # path('/api/v1/products/tags/', views.tags_list_view),
+
 ]
