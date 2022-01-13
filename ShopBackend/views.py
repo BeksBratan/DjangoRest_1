@@ -1,34 +1,37 @@
-import re
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import ProductSerializer, ProductDetailSerializer, ReviewSerializer
-from .models import Product, Review
+from .serializers import ProductSerializer, ReviewSerializer, TagSerializer
+from .models import Product, Review, Tag
 
 
 @api_view(['GET'])
-def product_list_view(request):
-    products = Product.objects.all()
-    data = ProductSerializer(products, many=True).data
+def get_product(request):
+    product = Product.objects.all()
+    data = ProductSerializer(product, many=True).data
     return Response(data=data)
 
 
 @api_view(['GET'])
-def product_detail_view(request, id):
+def get_detail(request, id):
     try:
         product = Product.objects.get(id=id)
     except Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND,
                         data={'error': 'Product not found!'})
-    data = ProductDetailSerializer(product, many=False).data
+    data = ProductSerializer(product).data
     return Response(data=data)
 
-# @api_view(['GET'])
-# def reviews_list_view(request):
-#     reviews = Review.objects.all()
-#     data = ReviewSerializer(reviews, many=True).data
-#     return Response(data=data)
+
+@api_view(['GET'])
+def get_review(request):
+    review = Review.objects.all()
+    data = ReviewSerializer(review, many=True).data
+    return Response(data=data)
 
 
-
-    
+@api_view(['GET'])
+def get_tags(request):
+    tag = Tag.objects.filter(is_active=True)
+    data = TagSerializer(tag, many=True).data
+    return Response(data=data)
