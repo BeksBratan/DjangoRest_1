@@ -1,3 +1,6 @@
+from itertools import product
+import re
+from urllib import request
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,13 +15,21 @@ def products_list_view(request):
     return Response(data=data)
 
 
-@api_view(['GET'])
+
+@api_view(['GET', 'DELETE', 'PUT'])
 def products_detail_view(request, id):
     try:
         product = models.Product.objects.get(id=id)
     except models.Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-    data = serializers.ProductDetailSerializer(product).data
+
+    # if request.method == 'PUT':
+    #     pass
+    # elif request.method == "DELETE":
+    #     product.delete()
+    #     return Response(data={"Product was delete"})
+    
+    data = serializers.ProductDetailSerializer(product, many=True).data
     return Response(data=data)
 
 
@@ -34,3 +45,14 @@ def products_tags_view(request):
     products = models.Product.objects.all()
     data = serializers.ProductTagsSerializer(products, many=True).data
     return Response(data=data)
+
+
+
+
+
+
+
+
+
+
+
