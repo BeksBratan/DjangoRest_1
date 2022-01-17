@@ -15,22 +15,22 @@ def products_list_view(request):
     return Response(data=data)
 
 
-
-@api_view(['GET', 'DELETE', 'PUT'])
+@api_view(['GET'])
 def products_detail_view(request, id):
     try:
         product = models.Product.objects.get(id=id)
     except models.Product.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-    # if request.method == 'PUT':
-    #     pass
-    # elif request.method == "DELETE":
-    #     product.delete()
-    #     return Response(data={"Product was delete"})
-    
     data = serializers.ProductDetailSerializer(product, many=True).data
     return Response(data=data)
+
+# @api_view(['PUT', 'DELETE'])
+# def products_datail_view(request, id):
+#     if request.method == 'PUT':
+#         pass
+#     elif request.method == "DELETE":
+#         product.delete()
+#         return Response(data={"Product was delete"})
 
 
 @api_view(['GET'])
